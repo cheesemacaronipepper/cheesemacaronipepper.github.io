@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jason Tran — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg0: #080b10;
+  --bg1: #0d1117;
+  --bg2: #111620;
+  --bg3: #161c2a;
+  --border: #1e2535;
+  --border2: #252f42;
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.12);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245,158,11,0.12);
+  --red: #ef4444;
+  --purple: #a78bfa;
+  --text0: #e2e8f0;
+  --text1: #94a3b8;
+  --text2: #4a5568;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Outfit', sans-serif;
+  --radius: 10px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg0);
+  color: var(--text0);
+  font-family: var(--sans);
+  min-height: 100vh;
+  cursor: default;
+}
+
+/* ─── SCANLINE overlay ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── LAYOUT ─── */
+.shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* ─── STATUS BAR ─── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 16px;
+  margin-bottom: 16px;
+}
+
+.led-group { display: flex; gap: 7px; align-items: center; }
+.led { width: 9px; height: 9px; border-radius: 50%; }
+.led-g { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.led-a { background: var(--amber); }
+.led-r { background: var(--red); }
+
+.status-id {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text2);
+  letter-spacing: 0.12em;
+}
+
+.status-right {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.08em;
+}
+
+/* ─── MAIN GRID ─── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 14px;
+}
+
+/* ─── PANEL BASE ─── */
+.panel {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.panel-header {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text2);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-header .blink {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* ─── LEFT COLUMN ─── */
+.left-col { display: flex; flex-direction: column; gap: 14px; }
+
+/* Identity card */
+.identity-panel { padding: 20px; }
+
+.owner-name {
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--green);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.owner-role {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text2);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.avatar-area {
+  width: 100%;
+  height: 160px;
+  border: 1px dashed var(--border2);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  background: var(--bg2);
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  overflow: hidden;
+}
+
+.avatar-area:hover { border-color: var(--green); background: var(--bg3); }
+
+.avatar-area img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  display: none;
+}
+
+.avatar-area .upload-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.upload-icon {
+  width: 28px; height: 28px;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text2);
+  font-size: 16px;
+}
+
+.upload-text {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text2);
+  letter-spacing: 0.1em;
+}
+
+.upload-input { display: none; }
+
+.contact-list { display: flex; flex-direction: column; gap: 6px; }
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text1);
+}
+
+.contact-key {
+  color: var(--text2);
+  min-width: 42px;
+  letter-spacing: 0.06em;
+}
+
+/* Sensor readouts */
+.sensor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+
+.sensor-cell {
+  background: var(--bg1);
+  padding: 12px 14px;
+}
+
+.sensor-lbl {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--text2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.sensor-val {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.sensor-unit {
+  font-size: 10px;
+  font-weight: 300;
+  opacity: 0.5;
+  margin-left: 2px;
+}
+
+.s-green { color: var(--green); }
+.s-blue  { color: var(--blue); }
+.s-amber { color: var(--amber); }
+.s-purple{ color: var(--purple); }
+
+/* Skills */
+.skills-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 9px; }
+
+.skill-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.skill-name {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text2);
+  min-width: 76px;
+  letter-spacing: 0.04em;
+}
+
+.skill-track {
+  flex: 1;
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.skill-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.skill-pct {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text2);
+  min-width: 28px;
+  text-align: right;
+}
+
+/* ─── RIGHT COLUMN ─── */
+.right-col { display: flex; flex-direction: column; gap: 14px; }
+
+/* Clock row */
+.clock-row {
+  display: flex;
+  gap: 14px;
+}
+
+.clock-panel { flex: 1; padding: 16px 18px; }
+
+.clock-time {
+  font-family: var(--mono);
+  font-size: 38px;
+  font-weight: 300;
+  color: var(--text0);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.clock-date {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text2);
+  margin-top: 4px;
+  letter-spacing: 0.1em;
+}
+
+/* Log panel */
+.log-panel { flex: 1; }
+.log-body { padding: 10px 14px; display: flex; flex-direction: column; gap: 5px; }
+
+.log-line {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+.log-ts { color: var(--text2); margin-right: 6px; }
+.log-ok { color: var(--green); }
+.log-inf { color: var(--blue); }
+.log-wrn { color: var(--amber); }
+.log-msg { color: var(--text1); }
+
+/* ─── PROJECTS GRID ─── */
+.projects-panel { }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+
+.project-card {
+  background: var(--bg1);
+  padding: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  position: relative;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card:hover { background: var(--bg2); }
+.project-card.active { background: var(--bg3); }
+.project-card.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--green);
+}
+
+.proj-ref {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--text2);
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+
+.proj-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text0);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.proj-desc {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text2);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.proj-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.proj-tag {
+  font-family: var(--mono);
+  font-size: 8px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+}
+
+.tag-done  { color: var(--green); background: var(--green-dim); border: 1px solid rgba(34,197,94,0.25); }
+.tag-wip   { color: var(--amber); background: var(--amber-dim); border: 1px solid rgba(245,158,11,0.25); }
+.tag-hw    { color: var(--blue);  background: var(--blue-dim);  border: 1px solid rgba(59,130,246,0.25); }
+.tag-sw    { color: var(--purple);background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.25); }
+
+/* ─── PROJECT DETAIL PANEL ─── */
+.detail-panel {
+  display: none;
+  animation: fadeIn 0.25s ease;
+}
+
+.detail-panel.visible { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.detail-body { padding: 20px; }
+
+.detail-top {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.gallery-area {
+  width: 240px;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gallery-main {
+  width: 100%;
+  height: 155px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-main img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-main .gallery-nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.gallery-main:hover .gallery-nav { opacity: 1; }
+
+.gallery-nav-btn {
+  width: 24px; height: 24px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  color: var(--text1);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  user-select: none;
+}
+
+.gallery-nav-btn:hover { background: rgba(0,0,0,0.85); color: var(--text0); }
+
+.gallery-counter {
+  position: absolute;
+  bottom: 6px; right: 8px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text1);
+  background: rgba(0,0,0,0.6);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.gallery-thumbs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.gallery-thumb {
+  width: 44px; height: 44px;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.gallery-thumb:hover { border-color: var(--border2); }
+.gallery-thumb.active-thumb { border-color: var(--green); }
+
+.gallery-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-add-btn {
+  width: 44px; height: 44px;
+  border-radius: 5px;
+  border: 1px dashed var(--border2);
+  background: var(--bg2);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text2);
+  font-size: 18px;
+  transition: border-color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.gallery-add-btn:hover { border-color: var(--green); background: var(--bg3); color: var(--green); }
+
+.img-upload-input { display: none; }
+
+.detail-info { flex: 1; }
+
+.detail-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text0);
+  margin-bottom: 4px;
+}
+
+.detail-period {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text2);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.detail-desc {
+  font-size: 13px;
+  color: var(--text1);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.detail-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-bullet {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text1);
+  line-height: 1.5;
+}
+
+.bullet-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.detail-tag-item {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--bg3);
+  color: var(--text1);
+  border: 1px solid var(--border2);
+}
+
+.award-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--amber);
+  border: 1px solid rgba(245,158,11,0.35);
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--amber-dim);
+  margin-top: 10px;
+}
+
+/* ─── FOOTER CONTROLS ─── */
+.footer-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  margin-top: 14px;
+}
+
+.btn-group { display: flex; gap: 6px; }
+
+.hw-btn {
+  width: 32px; height: 14px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.hw-btn:hover { background: var(--border2); }
+
+.knob {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+}
+
+.footer-info {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text2);
+  letter-spacing: 0.06em;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 800px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .projects-grid { grid-template-columns: 1fr 1fr; }
+  .clock-row { flex-direction: column; }
+  .detail-top { flex-direction: column; }
+  .detail-img-area { width: 100%; }
+}
+
+/* ─── TOOLTIP ─── */
+.tooltip-hint {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--text2);
+  letter-spacing: 0.1em;
+  text-align: center;
+  padding: 6px 14px 10px;
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div class="led-group">
+        <div class="led led-g"></div>
+        <div class="led led-a"></div>
+        <div class="led led-r"></div>
+      </div>
+      <div class="status-id">JTCE-PORTFOLIO-V1 · DEVICE ONLINE</div>
+    </div>
+    <div class="status-right" id="uptime-display">SYS OK · UPTIME: --</div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="main-grid">
+
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
+
+      <!-- Identity -->
+      <div class="panel">
+        <div class="panel-header">identity <div class="blink"></div></div>
+        <div class="identity-panel">
+          <div class="owner-name">JASON TRAN</div>
+          <div class="owner-role">CE STUDENT · SJSU</div>
+
+          <!-- Avatar upload -->
+          <div class="avatar-area" id="avatar-area" onclick="document.getElementById('avatar-upload').click()">
+            <input type="file" class="upload-input" id="avatar-upload" accept="image/*">
+            <img id="avatar-img" alt="Profile photo">
+            <div class="upload-hint">
+              <div class="upload-icon">+</div>
+              <div class="upload-text">CLICK TO ADD PHOTO</div>
+            </div>
+          </div>
+
+          <div class="contact-list">
+            <div class="contact-row"><span class="contact-key">EMAIL</span>jasontran2024@gmail.com</div>
+            <div class="contact-row"><span class="contact-key">PHONE</span>916-882-6661</div>
+            <div class="contact-row"><span class="contact-key">LINK</span>linkedin.com/in/jason</div>
+            <div class="contact-row"><span class="contact-key">LOC</span>San Jose, CA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clock -->
+      <div class="panel">
+        <div class="panel-header">real-time clock</div>
+        <div style="padding:16px 18px 14px;">
+          <div class="clock-time" id="clock-display">--:--:--</div>
+          <div class="clock-date" id="date-display">---</div>
+        </div>
+      </div>
+
+      <!-- Sensor readouts -->
+      <div class="panel">
+        <div class="panel-header">sys readouts</div>
+        <div class="sensor-grid">
+          <div class="sensor-cell">
+            <div class="sensor-lbl">Projects</div>
+            <div class="sensor-val s-green">03<span class="sensor-unit">built</span></div>
+          </div>
+          <div class="sensor-cell">
+            <div class="sensor-lbl">Languages</div>
+            <div class="sensor-val s-blue">07<span class="sensor-unit">lang</span></div>
+          </div>
+          <div class="sensor-cell">
+            <div class="sensor-lbl">CAD Tools</div>
+            <div class="sensor-val s-amber">04<span class="sensor-unit">pkgs</span></div>
+          </div>
+          <div class="sensor-cell">
+            <div class="sensor-lbl">Status</div>
+            <div class="sensor-val s-green" style="font-size:14px;margin-top:4px;">HIRING</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="panel">
+        <div class="panel-header">skill registers</div>
+        <div class="skills-body">
+          <div class="skill-row">
+            <div class="skill-name">C / C++</div>
+            <div class="skill-track"><div class="skill-fill" style="width:72%;background:var(--green)"></div></div>
+            <div class="skill-pct">72%</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-name">Python</div>
+            <div class="skill-track"><div class="skill-fill" style="width:65%;background:var(--green)"></div></div>
+            <div class="skill-pct">65%</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-name">Assembly</div>
+            <div class="skill-track"><div class="skill-fill" style="width:40%;background:var(--blue)"></div></div>
+            <div class="skill-pct">40%</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-name">JS/HTML/CSS</div>
+            <div class="skill-track"><div class="skill-fill" style="width:50%;background:var(--blue)"></div></div>
+            <div class="skill-pct">50%</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-name">Linux/Net</div>
+            <div class="skill-track"><div class="skill-fill" style="width:60%;background:var(--amber)"></div></div>
+            <div class="skill-pct">60%</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-name">CAD/Mech</div>
+            <div class="skill-track"><div class="skill-fill" style="width:52%;background:var(--amber)"></div></div>
+            <div class="skill-pct">52%</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-name">MATLAB</div>
+            <div class="skill-track"><div class="skill-fill" style="width:38%;background:var(--purple)"></div></div>
+            <div class="skill-pct">38%</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+
+      <!-- Log -->
+      <div class="panel">
+        <div class="panel-header">activity log <div class="blink"></div></div>
+        <div class="log-body">
+            <div class="log-line"><span class="log-ts">2024.01</span><span class="log-ok">[OK]</span> <span class="log-msg"> Solar boat drivetrain award</span></div>
+            <div class="log-line"><span class="log-ts">2025.01</span><span class="log-ok">[OK]</span> <span class="log-msg"> RPi VPN + surveillance live</span></div>
+            <div class="log-line"><span class="log-ts">2025.02</span><span class="log-inf">[INFO]</span><span class="log-msg"> Building supervisor role</span></div>
+            <div class="log-line"><span class="log-ts">2025.06</span><span class="log-inf">[INFO]</span><span class="log-msg"> Micro-Mechanics internship</span></div>
+            <div class="log-line"><span class="log-ts">2025.09</span><span class="log-wrn">[WIP]</span> <span class="log-msg"> ESP32 desk buddy init...</span></div>
+          </div>
+        </div>
+
+      <!-- Projects -->
+      <div class="panel projects-panel">
+        <div class="panel-header">project queue <span style="margin-left:auto;color:var(--text2);font-size:8px;letter-spacing:0.1em;">CLICK TO EXPAND</span></div>
+        <div class="projects-grid" id="projects-grid">
+
+          <div class="project-card" data-id="rpi" onclick="selectProject('rpi', this)">
+            <div class="proj-ref">P01 — NETWORKING</div>
+            <div class="proj-name">RPi VPN &amp; Surveillance</div>
+            <div class="proj-desc">Personal VPN + DNS filter + live camera feed via Raspberry Pi 3B+</div>
+            <div class="proj-tags">
+              <span class="proj-tag tag-done">DONE</span>
+              <span class="proj-tag tag-hw">HARDWARE</span>
+              <span class="proj-tag tag-sw">SOFTWARE</span>
+            </div>
+          </div>
+
+          <div class="project-card" data-id="solar" onclick="selectProject('solar', this)">
+            <div class="proj-ref">P02 — MECHANICAL</div>
+            <div class="proj-name">2024 Solar Regatta Boat</div>
+            <div class="proj-desc">Solar-powered competition boat with award-winning drivetrain design</div>
+            <div class="proj-tags">
+              <span class="proj-tag tag-done">DONE</span>
+              <span class="proj-tag tag-hw">HARDWARE</span>
+            </div>
+          </div>
+
+          <div class="project-card" data-id="esp32" onclick="selectProject('esp32', this)">
+            <div class="proj-ref">P03 — EMBEDDED</div>
+            <div class="proj-name">ESP32 Desk Buddy</div>
+            <div class="proj-desc">Temp/humidity sensor + real-time clock display desk companion device</div>
+            <div class="proj-tags">
+              <span class="proj-tag tag-wip">IN PROGRESS</span>
+              <span class="proj-tag tag-hw">HARDWARE</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="tooltip-hint">SELECT A PROJECT ABOVE TO VIEW FULL DETAILS</div>
+      </div>
+
+      <!-- Detail Panel -->
+      <div class="panel detail-panel" id="detail-panel">
+        <div class="panel-header" id="detail-header">project detail <span style="margin-left:auto;cursor:pointer;color:var(--text2);" onclick="closeDetail()">[ CLOSE ]</span></div>
+        <div class="detail-body" id="detail-body"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-controls">
+    <div class="btn-group">
+      <div class="hw-btn"></div>
+      <div class="hw-btn"></div>
+      <div class="hw-btn"></div>
+    </div>
+    <div class="footer-info">JTCE-PORTFOLIO-R1.0 · SAN JOSE STATE UNIVERSITY · CE</div>
+    <div class="knob"></div>
+  </div>
+
+</div>
+
+<script>
+// ─── Clock & Uptime ───
+const bootTime = new Date('2025-01-01T00:00:00');
+
+function padZ(n) { return String(n).padStart(2,'0'); }
+
+const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+function tick() {
+  const now = new Date();
+  document.getElementById('clock-display').textContent =
+    padZ(now.getHours()) + ':' + padZ(now.getMinutes()) + ':' + padZ(now.getSeconds());
+  document.getElementById('date-display').textContent =
+    DAYS[now.getDay()] + ' ' + padZ(now.getDate()) + ' ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear();
+
+  const diff = Math.floor((now - bootTime) / 1000);
+  const d = Math.floor(diff / 86400);
+  const h = Math.floor((diff % 86400) / 3600);
+  const m = Math.floor((diff % 3600) / 60);
+  const s = diff % 60;
+  document.getElementById('uptime-display').textContent =
+    'SYS OK · UPTIME: ' + padZ(d) + 'd ' + padZ(h) + ':' + padZ(m) + ':' + padZ(s);
+}
+tick();
+setInterval(tick, 1000);
+
+// ─── Avatar upload ───
+document.getElementById('avatar-upload').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const img = document.getElementById('avatar-img');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    document.querySelector('.upload-hint').style.display = 'none';
+    // Save for session
+    sessionStorage.setItem('avatar', ev.target.result);
+  };
+  reader.readAsDataURL(file);
+});
+
+// Restore avatar
+const savedAvatar = sessionStorage.getItem('avatar');
+if (savedAvatar) {
+  const img = document.getElementById('avatar-img');
+  img.src = savedAvatar;
+  img.style.display = 'block';
+  document.querySelector('.upload-hint').style.display = 'none';
+}
+
+// ─── Project Data ───
+const projects = {
+  rpi: {
+    ref: 'P01 — NETWORKING / LINUX',
+    name: 'Raspberry Pi VPN & Surveillance',
+    period: 'JAN 2025 — MAR 2025',
+    desc: 'Built a full home networking stack on a Raspberry Pi 3B+ — a personal VPN server, DNS-level ad blocking, and a live camera surveillance feed accessible from anywhere.',
+    bullets: [
+      'Built a personal VPN using WireGuard on Raspberry Pi 3B+ tunneled through Oracle Cloud Server for remote secure access',
+      'Configured Pi-hole DNS filtering routed through VPN to block ads and malicious traffic network-wide',
+      'Integrated OV5647 camera module for live video feedback and image capture through a locally hosted website',
+      'Managed Linux-based system configuration including port forwarding, DNS, and firewall rules'
+    ],
+    tags: ['Raspberry Pi 3B+', 'WireGuard', 'Pi-hole', 'Linux', 'OV5647 Camera', 'Oracle Cloud', 'Networking', 'DNS', 'Python'],
+    award: null,
+    status: 'DONE',
+    statusClass: 'tag-done',
+    imgKey: 'img-rpi'
+  },
+  solar: {
+    ref: 'P02 — MECHANICAL / CAD',
+    name: '2024 Solar Regatta Boat',
+    period: 'JAN 2024 — MAY 2024',
+    desc: 'Designed and built a fully functional solar-powered competition boat as part of a multidisciplinary team. Focused on the drivetrain system, earning recognition for best design.',
+    bullets: [
+      'Designed and built a solar-powered boat with a multidisciplinary team for competitive regatta racing',
+      'Created detailed CAD models using AutoCAD and Fusion 360 for the boat shell and all structural components',
+      'Led optimization of the drivetrain system, balancing torque, efficiency, and weight distribution',
+      'Earned the Best Drivetrain Design Award at the 2024 competition'
+    ],
+    tags: ['AutoCAD', 'Fusion 360', 'SolidWorks', 'Mechanical Design', 'Drivetrain', 'Solar Power', 'Team Project'],
+    award: '★ BEST DRIVETRAIN DESIGN AWARD — 2024',
+    status: 'DONE',
+    statusClass: 'tag-done',
+    imgKey: 'img-solar'
+  },
+  esp32: {
+    ref: 'P03 — EMBEDDED / FIRMWARE',
+    name: 'ESP32 Desk Buddy',
+    period: 'IN PROGRESS',
+    desc: 'A personal embedded systems project — a desk companion device that displays real-time temperature, humidity, and clock data. Built around the ESP32 microcontroller with a custom enclosure.',
+    bullets: [
+      'Developing firmware in C/C++ on the ESP32 platform for sensor data acquisition and display control',
+      'Integrating DHT22 or similar sensor for accurate temperature and humidity readings',
+      'Driving a small TFT/OLED display to show live sensor data and real-time clock output',
+      'Designing a custom 3D-printed enclosure using CAD tools for a clean desk form factor'
+    ],
+    tags: ['ESP32', 'C/C++', 'DHT22', 'OLED Display', 'Firmware', 'CAD', 'Embedded Systems', '3D Printing'],
+    award: null,
+    status: 'IN PROGRESS',
+    statusClass: 'tag-wip',
+    imgKey: 'img-esp32'
+  }
+};
+
+// Multi-image storage: { 'rpi': ['data:...', 'data:...'], ... }
+const projectImages = { rpi: [], solar: [], esp32: [] };
+
+// Active gallery state per project
+const galleryState = { rpi: 0, solar: 0, esp32: 0 };
+
+let activeCard = null;
+
+function renderGallery(id) {
+  const imgs = projectImages[id];
+  const idx = galleryState[id];
+
+  const mainEl = document.getElementById('gallery-main-img');
+  const counterEl = document.getElementById('gallery-counter');
+  const thumbsEl = document.getElementById('gallery-thumbs');
+  const navEl = document.getElementById('gallery-nav');
+  const emptyEl = document.getElementById('gallery-empty');
+
+  if (!mainEl) return;
+
+  if (imgs.length === 0) {
+    mainEl.style.display = 'none';
+    navEl.style.display = 'none';
+    counterEl.style.display = 'none';
+    emptyEl.style.display = 'flex';
+    thumbsEl.innerHTML = '';
+  } else {
+    mainEl.src = imgs[idx];
+    mainEl.style.display = 'block';
+    emptyEl.style.display = 'none';
+    navEl.style.display = imgs.length > 1 ? 'flex' : 'none';
+    counterEl.style.display = imgs.length > 1 ? 'block' : 'none';
+    counterEl.textContent = (idx + 1) + ' / ' + imgs.length;
+
+    // Thumbs
+    thumbsEl.innerHTML = imgs.map((src, i) =>
+      `<div class="gallery-thumb ${i === idx ? 'active-thumb' : ''}" onclick="setGalleryIdx('${id}', ${i})">
+        <img src="${src}" alt="photo ${i+1}">
+      </div>`
+    ).join('') +
+    `<div class="gallery-add-btn" onclick="document.getElementById('gallery-upload').click()" title="Add photo">+</div>`;
+  }
+}
+
+function setGalleryIdx(id, idx) {
+  galleryState[id] = idx;
+  renderGallery(id);
+}
+
+function galleryPrev(id) {
+  const imgs = projectImages[id];
+  if (!imgs.length) return;
+  galleryState[id] = (galleryState[id] - 1 + imgs.length) % imgs.length;
+  renderGallery(id);
+}
+
+function galleryNext(id) {
+  const imgs = projectImages[id];
+  if (!imgs.length) return;
+  galleryState[id] = (galleryState[id] + 1) % imgs.length;
+  renderGallery(id);
+}
+
+function selectProject(id, card) {
+  document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+  activeCard = id;
+
+  const p = projects[id];
+  const imgs = projectImages[id];
+
+  const bulletsHTML = p.bullets.map(b =>
+    `<div class="detail-bullet"><div class="bullet-dot"></div><div>${b}</div></div>`
+  ).join('');
+
+  const tagsHTML = p.tags.map(t => `<div class="detail-tag-item">${t}</div>`).join('');
+
+  const awardHTML = p.award ? `<div class="award-badge">★ ${p.award}</div>` : '';
+
+  const hasImgs = imgs.length > 0;
+
+  document.getElementById('detail-body').innerHTML = `
+    <div class="detail-top">
+      <div class="gallery-area">
+        <input type="file" class="img-upload-input" id="gallery-upload" accept="image/*" multiple>
+        <div class="gallery-main">
+          <img id="gallery-main-img" src="${hasImgs ? imgs[galleryState[id]] : ''}" alt="Project photo" style="${hasImgs ? '' : 'display:none'}">
+          <div id="gallery-empty" style="display:${hasImgs ? 'none' : 'flex'};flex-direction:column;align-items:center;gap:8px;cursor:pointer;" onclick="document.getElementById('gallery-upload').click()">
+            <div class="upload-icon">+</div>
+            <div class="upload-text">ADD PHOTOS</div>
+            <div class="upload-text" style="opacity:0.45">PNG · JPG · WEBP</div>
+          </div>
+          <div class="gallery-nav" id="gallery-nav" style="display:${hasImgs && imgs.length > 1 ? 'flex' : 'none'}">
+            <div class="gallery-nav-btn" onclick="galleryPrev('${id}')">‹</div>
+            <div class="gallery-nav-btn" onclick="galleryNext('${id}')">›</div>
+          </div>
+          <div class="gallery-counter" id="gallery-counter" style="display:${hasImgs && imgs.length > 1 ? 'block' : 'none'}">${hasImgs ? (galleryState[id]+1)+' / '+imgs.length : ''}</div>
+        </div>
+        <div class="gallery-thumbs" id="gallery-thumbs">
+          ${hasImgs
+            ? imgs.map((src, i) =>
+                `<div class="gallery-thumb ${i === galleryState[id] ? 'active-thumb' : ''}" onclick="setGalleryIdx('${id}', ${i})"><img src="${src}" alt="photo ${i+1}"></div>`
+              ).join('') +
+              `<div class="gallery-add-btn" onclick="document.getElementById('gallery-upload').click()" title="Add photo">+</div>`
+            : ''
+          }
+        </div>
+      </div>
+
+      <div class="detail-info">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text2);letter-spacing:0.12em;margin-bottom:4px;">${p.ref}</div>
+        <div class="detail-title">${p.name}</div>
+        <div class="detail-period">${p.period}</div>
+        <div class="detail-desc">${p.desc}</div>
+        ${awardHTML}
+        <div style="margin-top:10px;">
+          <span class="proj-tag ${p.statusClass}">${p.status}</span>
+        </div>
+      </div>
+    </div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--text2);letter-spacing:0.12em;margin-bottom:10px;">IMPLEMENTATION NOTES</div>
+    <div class="detail-bullets">${bulletsHTML}</div>
+    <div class="detail-tags">${tagsHTML}</div>
+  `;
+
+  // Wire upload — supports multiple files at once
+  document.getElementById('gallery-upload').addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    let loaded = 0;
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        projectImages[id].push(ev.target.result);
+        loaded++;
+        if (loaded === files.length) {
+          galleryState[id] = projectImages[id].length - 1;
+          renderGallery(id);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+    this.value = '';
+  });
+
+  const panel = document.getElementById('detail-panel');
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('visible');
+  document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
+  activeCard = null;
+}
+</script>
+</body>
+</html>
