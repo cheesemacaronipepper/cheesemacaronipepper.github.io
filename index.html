@@ -708,10 +708,10 @@ body::before {
 
       <!-- Identity -->
       <div class="panel">
-        <div class="panel-header">identity <div class="blink"></div></div>
+        <div class="panel-header">ABOUT <div class="blink"></div></div>
         <div class="identity-panel">
           <div class="owner-name">JASON TRAN</div>
-          <div class="owner-role">CE STUDENT · SJSU</div>
+          <div class="owner-role">COMPUTER ENGINEERING STUDENT · SJSU</div>
 
           <!-- Avatar upload -->
           <div class="avatar-area" id="avatar-area" onclick="document.getElementById('avatar-upload').click()">
@@ -726,8 +726,8 @@ body::before {
           <div class="contact-list">
             <div class="contact-row"><span class="contact-key">EMAIL</span>jasontran2024@gmail.com</div>
             <div class="contact-row"><span class="contact-key">PHONE</span>916-882-6661</div>
-            <div class="contact-row"><span class="contact-key">LINK</span>linkedin.com/in/jason</div>
-            <div class="contact-row"><span class="contact-key">LOC</span>San Jose, CA</div>
+            <div class="contact-row"><span class="contact-key">LINKEDIN</span>linkedin.com/in/jason</div>
+            <div class="contact-row"><span class="contact-key">LOCATION</span>San Jose, CA</div>
           </div>
         </div>
       </div>
@@ -747,7 +747,7 @@ body::before {
         <div class="sensor-grid">
           <div class="sensor-cell">
             <div class="sensor-lbl">Projects</div>
-            <div class="sensor-val s-green">03<span class="sensor-unit">built</span></div>
+            <div class="sensor-val s-green">02<span class="sensor-unit">built</span></div>
           </div>
           <div class="sensor-cell">
             <div class="sensor-lbl">Languages</div>
@@ -755,11 +755,11 @@ body::before {
           </div>
           <div class="sensor-cell">
             <div class="sensor-lbl">CAD Tools</div>
-            <div class="sensor-val s-amber">04<span class="sensor-unit">pkgs</span></div>
+            <div class="sensor-val s-amber">06<span class="sensor-unit">pkgs</span></div>
           </div>
           <div class="sensor-cell">
             <div class="sensor-lbl">Status</div>
-            <div class="sensor-val s-green" style="font-size:14px;margin-top:4px;">HIRING</div>
+            <div class="sensor-val s-green" style="font-size:14px;margin-top:4px;">OPEN TO WORK</div>
           </div>
         </div>
       </div>
@@ -791,17 +791,12 @@ body::before {
           <div class="skill-row">
             <div class="skill-name">Linux/Net</div>
             <div class="skill-track"><div class="skill-fill" style="width:60%;background:var(--amber)"></div></div>
-            <div class="skill-pct">60%</div>
+            <div class="skill-pct">31%</div>
           </div>
           <div class="skill-row">
             <div class="skill-name">CAD/Mech</div>
             <div class="skill-track"><div class="skill-fill" style="width:52%;background:var(--amber)"></div></div>
-            <div class="skill-pct">52%</div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-name">MATLAB</div>
-            <div class="skill-track"><div class="skill-fill" style="width:38%;background:var(--purple)"></div></div>
-            <div class="skill-pct">38%</div>
+            <div class="skill-pct">76%</div>
           </div>
         </div>
       </div>
@@ -817,15 +812,15 @@ body::before {
         <div class="log-body">
             <div class="log-line"><span class="log-ts">2024.01</span><span class="log-ok">[OK]</span> <span class="log-msg"> Solar boat drivetrain award</span></div>
             <div class="log-line"><span class="log-ts">2025.01</span><span class="log-ok">[OK]</span> <span class="log-msg"> RPi VPN + surveillance live</span></div>
-            <div class="log-line"><span class="log-ts">2025.02</span><span class="log-inf">[INFO]</span><span class="log-msg"> Building supervisor role</span></div>
-            <div class="log-line"><span class="log-ts">2025.06</span><span class="log-inf">[INFO]</span><span class="log-msg"> Micro-Mechanics internship</span></div>
-            <div class="log-line"><span class="log-ts">2025.09</span><span class="log-wrn">[WIP]</span> <span class="log-msg"> ESP32 desk buddy init...</span></div>
+            <div class="log-line"><span class="log-ts">2025.02</span><span class="log-inf">[INFO]</span><span class="log-msg"> Building Supervisor Role</span></div>
+            <div class="log-line"><span class="log-ts">2025.06</span><span class="log-inf">[INFO]</span><span class="log-msg"> Micro-Mechanics Internship</span></div>
+            <div class="log-line"><span class="log-ts">2025.09</span><span class="log-wrn">[WIP]</span> <span class="log-msg"> ESP32 RTOS Sensor Hub init...</span></div>
           </div>
         </div>
 
       <!-- Projects -->
       <div class="panel projects-panel">
-        <div class="panel-header">project queue <span style="margin-left:auto;color:var(--text2);font-size:8px;letter-spacing:0.1em;">CLICK TO EXPAND</span></div>
+        <div class="panel-header">project queue</div>
         <div class="projects-grid" id="projects-grid">
 
           <div class="project-card" data-id="rpi" onclick="selectProject('rpi', this)">
@@ -887,7 +882,7 @@ body::before {
 
 <script>
 // ─── Clock & Uptime ───
-const bootTime = new Date('2025-01-01T00:00:00');
+const bootTime = new Date('2026-03-02T13:32:02');
 
 function padZ(n) { return String(n).padStart(2,'0'); }
 
@@ -964,7 +959,6 @@ const projects = {
     bullets: [
       'Designed and built a solar-powered boat with a multidisciplinary team for competitive regatta racing',
       'Created detailed CAD models using AutoCAD and Fusion 360 for the boat shell and all structural components',
-      'Led optimization of the drivetrain system, balancing torque, efficiency, and weight distribution',
       'Earned the Best Drivetrain Design Award at the 2024 competition'
     ],
     tags: ['AutoCAD', 'Fusion 360', 'SolidWorks', 'Mechanical Design', 'Drivetrain', 'Solar Power', 'Team Project'],
