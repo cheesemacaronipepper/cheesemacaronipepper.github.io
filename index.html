@@ -663,6 +663,77 @@ body::before {
   letter-spacing: 0.06em;
 }
 
+.resume-btn {
+  margin-top: 16px;
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  color: var(--text0);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.resume-btn:hover { background: var(--bg3); border-color: var(--green); }
+
+.resume-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 12, 0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 10000;
+}
+
+.resume-modal.visible { display: flex; }
+
+.resume-modal-content {
+  width: min(1100px, 100%);
+  height: min(92vh, 100%);
+  background: var(--bg1);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.resume-modal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text1);
+}
+
+.resume-close-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text0);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  cursor: pointer;
+}
+.resume-close-btn:hover { border-color: var(--green); }
+
+.resume-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
 /* ─── RESPONSIVE ─── */
 @media (max-width: 800px) {
   .main-grid { grid-template-columns: 1fr; }
@@ -700,27 +771,18 @@ body::before {
     <div class="status-right" id="uptime-display">SYS OK · UPTIME: --</div>
   </div>
 
-  <!-- Main Grid -->
   <div class="main-grid">
 
-    <!-- LEFT COLUMN -->
     <div class="left-col">
 
-      <!-- Identity -->
       <div class="panel">
-        <div class="panel-header">ABOUT <div class="blink"></div></div>
+        <div class="panel-header">ABOUT<div class="blink"></div></div>
         <div class="identity-panel">
           <div class="owner-name">JASON TRAN</div>
           <div class="owner-role">COMPUTER ENGINEERING STUDENT · SJSU</div>
 
-          <!-- Avatar upload -->
-          <div class="avatar-area" id="avatar-area" onclick="document.getElementById('avatar-upload').click()">
-            <input type="file" class="upload-input" id="avatar-upload" accept="image/*">
-            <img id="avatar-img" alt="Profile photo">
-            <div class="upload-hint">
-              <div class="upload-icon">+</div>
-              <div class="upload-text">CLICK TO ADD PHOTO</div>
-            </div>
+          <div class="avatar-area" id="avatar-area">
+            <img id="avatar-img" alt="Profile photo" src="prof.jpg" style="display:block;">
           </div>
 
           <div class="contact-list">
@@ -729,6 +791,8 @@ body::before {
             <div class="contact-row"><span class="contact-key">LINKEDIN</span>linkedin.com/in/jason</div>
             <div class="contact-row"><span class="contact-key">LOCATION</span>San Jose, CA</div>
           </div>
+
+          <button class="resume-btn" onclick="openResumeModal()">VIEW RESUME</button>
         </div>
       </div>
 
@@ -880,6 +944,16 @@ body::before {
 
 </div>
 
+<div class="resume-modal" id="resume-modal">
+  <div class="resume-modal-content">
+    <div class="resume-modal-bar">
+      <span>JASON_TRAN_RESUME.pdf</span>
+      <button class="resume-close-btn" onclick="closeResumeModal()">CLOSE</button>
+    </div>
+    <iframe class="resume-frame" src="Jason_Tran_Resume.pdf"></iframe>
+  </div>
+</div>
+
 <script>
 // ─── Clock & Uptime ───
 const bootTime = new Date('2026-03-02T13:32:02');
@@ -907,30 +981,21 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 
-// ─── Avatar upload ───
-document.getElementById('avatar-upload').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev) {
-    const img = document.getElementById('avatar-img');
-    img.src = ev.target.result;
-    img.style.display = 'block';
-    document.querySelector('.upload-hint').style.display = 'none';
-    // Save for session
-    sessionStorage.setItem('avatar', ev.target.result);
-  };
-  reader.readAsDataURL(file);
+function openResumeModal() {
+  document.getElementById('resume-modal').classList.add('visible');
+}
+
+function closeResumeModal() {
+  document.getElementById('resume-modal').classList.remove('visible');
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeResumeModal();
 });
 
-// Restore avatar
-const savedAvatar = sessionStorage.getItem('avatar');
-if (savedAvatar) {
-  const img = document.getElementById('avatar-img');
-  img.src = savedAvatar;
-  img.style.display = 'block';
-  document.querySelector('.upload-hint').style.display = 'none';
-}
+document.getElementById('resume-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeResumeModal();
+});
 
 // ─── Project Data ───
 const projects = {
@@ -949,7 +1014,7 @@ const projects = {
     award: null,
     status: 'DONE',
     statusClass: 'tag-done',
-    imgKey: 'img-rpi'
+    images: ['pi.jpg', 'pi2.jpg']
   },
   solar: {
     ref: 'P02 — MECHANICAL / CAD',
@@ -965,7 +1030,7 @@ const projects = {
     award: '★ BEST DRIVETRAIN DESIGN AWARD — 2024',
     status: 'DONE',
     statusClass: 'tag-done',
-    imgKey: 'img-solar'
+    images: ['SRboat.png']
   },
   esp32: {
     ref: 'P03 — EMBEDDED / FIRMWARE',
@@ -982,13 +1047,16 @@ const projects = {
     award: null,
     status: 'IN PROGRESS',
     statusClass: 'tag-wip',
-    imgKey: 'img-esp32'
+    images: []
   }
 };
 
 // Multi-image storage: { 'rpi': ['data:...', 'data:...'], ... }
-const projectImages = { rpi: [], solar: [], esp32: [] };
-
+const projectImages = {
+  rpi: [...projects.rpi.images],
+  solar: [...projects.solar.images],
+  esp32: [...projects.esp32.images]
+};
 // Active gallery state per project
 const galleryState = { rpi: 0, solar: 0, esp32: 0 };
 
@@ -1025,8 +1093,7 @@ function renderGallery(id) {
       `<div class="gallery-thumb ${i === idx ? 'active-thumb' : ''}" onclick="setGalleryIdx('${id}', ${i})">
         <img src="${src}" alt="photo ${i+1}">
       </div>`
-    ).join('') +
-    `<div class="gallery-add-btn" onclick="document.getElementById('gallery-upload').click()" title="Add photo">+</div>`;
+    ).join('');
   }
 }
 
@@ -1070,7 +1137,6 @@ function selectProject(id, card) {
   document.getElementById('detail-body').innerHTML = `
     <div class="detail-top">
       <div class="gallery-area">
-        <input type="file" class="img-upload-input" id="gallery-upload" accept="image/*" multiple>
         <div class="gallery-main">
           <img id="gallery-main-img" src="${hasImgs ? imgs[galleryState[id]] : ''}" alt="Project photo" style="${hasImgs ? '' : 'display:none'}">
           <div id="gallery-empty" style="display:${hasImgs ? 'none' : 'flex'};flex-direction:column;align-items:center;gap:8px;cursor:pointer;" onclick="document.getElementById('gallery-upload').click()">
