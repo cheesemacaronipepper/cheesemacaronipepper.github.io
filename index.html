@@ -174,8 +174,9 @@ body::before {
 .avatar-area img {
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: center 0%;
   border-radius: 5px;
-  display: none;
+  display: block;
 }
 
 .avatar-area .upload-hint {
@@ -1139,10 +1140,9 @@ function selectProject(id, card) {
       <div class="gallery-area">
         <div class="gallery-main">
           <img id="gallery-main-img" src="${hasImgs ? imgs[galleryState[id]] : ''}" alt="Project photo" style="${hasImgs ? '' : 'display:none'}">
-          <div id="gallery-empty" style="display:${hasImgs ? 'none' : 'flex'};flex-direction:column;align-items:center;gap:8px;cursor:pointer;" onclick="document.getElementById('gallery-upload').click()">
-            <div class="upload-icon">+</div>
-            <div class="upload-text">ADD PHOTOS</div>
-            <div class="upload-text" style="opacity:0.45">PNG · JPG · WEBP</div>
+          <div id="gallery-empty" style="display:${hasImgs ? 'none' : 'flex'};flex-direction:column;align-items:center;gap:8px;">
+            <div class="upload-icon">•</div>
+            <div class="upload-text">NO IMAGE AVAILABLE</div>
           </div>
           <div class="gallery-nav" id="gallery-nav" style="display:${hasImgs && imgs.length > 1 ? 'flex' : 'none'}">
             <div class="gallery-nav-btn" onclick="galleryPrev('${id}')">‹</div>
@@ -1154,8 +1154,7 @@ function selectProject(id, card) {
           ${hasImgs
             ? imgs.map((src, i) =>
                 `<div class="gallery-thumb ${i === galleryState[id] ? 'active-thumb' : ''}" onclick="setGalleryIdx('${id}', ${i})"><img src="${src}" alt="photo ${i+1}"></div>`
-              ).join('') +
-              `<div class="gallery-add-btn" onclick="document.getElementById('gallery-upload').click()" title="Add photo">+</div>`
+              ).join('')
             : ''
           }
         </div>
@@ -1176,26 +1175,6 @@ function selectProject(id, card) {
     <div class="detail-bullets">${bulletsHTML}</div>
     <div class="detail-tags">${tagsHTML}</div>
   `;
-
-  // Wire upload — supports multiple files at once
-  document.getElementById('gallery-upload').addEventListener('change', function(e) {
-    const files = Array.from(e.target.files);
-    if (!files.length) return;
-    let loaded = 0;
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        projectImages[id].push(ev.target.result);
-        loaded++;
-        if (loaded === files.length) {
-          galleryState[id] = projectImages[id].length - 1;
-          renderGallery(id);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-    this.value = '';
-  });
 
   const panel = document.getElementById('detail-panel');
   panel.classList.add('visible');
